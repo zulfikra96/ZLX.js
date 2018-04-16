@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4" style="margin-top:20px;">
+                <form action="">
+                    <label for="">Pesan</label>
+                    <input type="text" class="form-control" id="input" value="">
+                    <br>
+                    <button class="btn btn-primary" onclick="send()" type="button">Kirim</button>
+                </form>
+            </div>
+            <div class="col-md-6" style="margin-top:20px;">
+                <panel class="card ">
+                    <div class="panel-body" id="chat-box">                
+                    </div>
+                </panel>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="{{url('assets/js/chat.js')}}"></script>
+</body>
+</html>
