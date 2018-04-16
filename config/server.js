@@ -20,8 +20,7 @@ const ip = require('ip')
 
 // asset
 function view(req,res,arg,params){
-     res.end(views.renderFile(arg,params))
-    
+     res.end(views.renderFile(arg,params)) 
 }
 
 global.redirect = function(req,res,location){
@@ -195,6 +194,7 @@ function run(listen,callback){
             }
             
             global.Method = req.method.toString().toUpperCase()
+            req.methods = req.method.toString().toUpperCase()
             global.DateTime = datetime
             global.View     = view
 

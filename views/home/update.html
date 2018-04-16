@@ -1,0 +1,43 @@
+{% extends "../index.html" %}
+
+
+{% block body %}
+ 
+
+    <form action="{{url('home')}}/{{result.id}}" method="POST">
+        <input type="text" placeholder="nama" name="nama" value="{{result.nama}}">
+        <input type="text" placeholder="username" name="username" value="{{result.username}}">
+        <input type="text" placeholder="password" name="password" value="{{result.password}}">
+        <button>Kirim</button>
+    </form>
+
+    <script>
+    
+       
+    fetch("http://localhost:8000/users",{
+            method:'GET',
+        }).then(function (response) {
+            response.text().then(function (params) {
+                let data = JSON.parse(params)
+                console.log(data);
+                
+                let data_html = ''
+                for (let datax in data) {
+                    data_html += `<h4>${data[datax].id} |${data[datax].nama}</h4>
+                        <form action="{{url('home/delete')}}" method="POST">
+                            <input type="hidden" value="${data[datax].id}" name="id">
+                            <button type="submit">Hapus</button>    
+                           
+                        </form>
+                    ` 
+                    console.log(data[datax].nama);
+                      
+                }
+
+                document.querySelector('.users').innerHTML = data_html
+            })
+            
+        })
+     
+    </script>
+{% endblock %}

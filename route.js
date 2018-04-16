@@ -8,14 +8,123 @@ var LocalStorage = require('node-localstorage').LocalStorage
 var localStorage = new LocalStorage('./scratch')
 
 
+
 // route
 route("/index",function(req,res){
-   view(req,res,"./views/index.html")
+    view(req,res,"./views/index.html")
 })
 
+
+route("/home/delete",function (req,res) {
+    if (req.methods == 'POST') {
+        req.on('data',function(data){
+            let json = qs.parse(data.toString())
+            let sql = `DELETE FROM users WHERE id=${json.id}`
+            con.query(sql,function(err,result){
+                if(err) console.log();
+                
+                res.writeHead(302,{'Location':'/home'})
+                return res.end()
+            })
+        
+        })
+    }
+})
+
+
+route("/home/:id",function(req,res){
+    var id = req.params.id 
+    if (req.methods == 'GET') {
+        let sql = `SELECT * FROM users WHERE id=${id}`
+
+        con.query(sql,function(err,result){
+            if(err) console.log(err);
+            return view(req,res,"./views/home/update.html",{
+                result:result[0]
+            })
+        })
+    }
+
+   else if (req.methods == 'POST') {
+        req.on('data',function(data){
+            console.log(data.toString());
+            
+            let json_data = JSON.parse(data.toString())
+            let sql = `UPDATE users SET nama = '${json_data.nama}', username = '${json_data.username}',password = '${json_data.password}' WHERE id = ${id}`
+
+            con.query(sql,function(err,result){
+                if(err) console.log(err);
+                res.writeHead(302,{'Location':'/home'})
+                return res.end()
+            })
+        })
+    }
+    
+})
+
+route("/home",function(req,res){
+    if (req.methods == 'POST') {
+        req.on('data',function (data) {
+            let json = qs.parse(data.toString())
+            let sql = `INSERT INTO users (nama,username,password) 
+                        VALUE('${json.nama}','${json.username}','${json.password}')`
+
+            con.query(sql,function (err,result) {
+                if(err) console.log(err);
+
+                res.writeHead(302,{'Location':'/home'})
+                res.end()                  
+            })
+        })
+    }
+
+    if (req.methods == 'GET') {
+        let sql = `SELECT * FROM users`
+        con.query(sql,function(err,result){
+            if (err) {
+                console.log(err);      
+            }
+            console.log(result);
+            view(req,res,"./views/home/index.html",{
+                data:result
+            })
+        })  
+    }
+    
+})
+
+api("/home",function (req,res) {
+    res.json(200,{
+        "test":"hello world"
+    })
+})
+
+route("/users",function (req,res) {
+    if (Method == 'GET') {
+        let sql = `SELECT * FROM users`
+        con.query(sql,function(err,result){
+            if (err) {
+                console.log(err);      
+            }
+            console.log(result);
+            res.writeHead(200,{
+                'Content-Type':'application/json'
+            })
+            res.end(JSON.stringify(result))
+        }) 
+    }
+     
+})
+
+
+
+
+
+
+
 // listen
-var server =  run(5000, function () {
-    console.log('run 5000')
+var server =  run(8000, function () {
+    console.log('run 8000')
 })
 Io.on('connection',function(socket){
     console.log('made socket connection')

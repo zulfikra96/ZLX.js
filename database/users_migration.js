@@ -6,11 +6,9 @@ var process = require('process')
 var migration = {
     up:`CREATE TABLE users (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(50) UNIQUE,
-        level_id INT(10) ,
-        no_hp VARCHAR(12) UNIQUE,
-        email VARCHAR(100) UNIQUE,
-        password VARCHAR(100) 
+        nama VARCHAR(200),
+        username VARCHAR(200) UNIQUE,
+        password VARCHAR(200)
     )`,
     down:"DROP TABLE users"
 }
